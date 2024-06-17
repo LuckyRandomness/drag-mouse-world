@@ -3,9 +3,47 @@
  */
 package drag.mouse.world;
 
+import java.security.InvalidParameterException;
+import java.util.Scanner;
+
+//convert binary to decimal translator
+
 public class App {
 
     public static void main(String[] args) {
-        
+        String binary = App.promptBinary();
+        App.translateBinary(binary);
+    }
+
+    private static String promptBinary() {
+        String binary;
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Please input a binary number.");
+            try {
+                binary = Integer.toString(scanner.nextInt());
+            } catch (Exception e) {
+                System.out.println("Error!");
+                scanner.reset();
+                return promptBinary();
+            }
+        }
+        return binary;
+    }
+
+    private static void translateBinary(String binary) {
+
+        int digits = binary.length();
+        int total = 0;
+
+        for (int i = digits - 1; i >= 0; i--) {
+            char valueAtDigit = binary.charAt(i);
+            
+            if (valueAtDigit == '1') {
+                total += Math.pow(2, i);
+            } else if (valueAtDigit != '0') {
+                throw new InvalidParameterException("You have not inputted a binary number.");
+            }
+        }
+        System.out.println(total);
     }
 }
